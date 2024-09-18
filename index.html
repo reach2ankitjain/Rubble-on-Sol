@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.cdnfonts.com/css/public-pixel" rel="stylesheet">
+  <style>
+    html, body {
+      touch-action: none !important;
+      overflow: hidden; /* Prevent scrolling */
+      height: 100%; /* Ensure the body takes up full height */
+    }
+    /* Hide content in landscape mode */
+    @media screen and (orientation: landscape) {
+      #root {
+        display: none;
+      }
+      .landscape-warning {
+        display: block;
+      }
+    }
+
+    /* Show content in portrait mode */
+    @media screen and (orientation: portrait) {
+      #root {
+        display: block;
+      }
+      .landscape-warning {
+        display: none;
+      }
+    }
+
+    .landscape-warning {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      font-size: 1.5em;
+      font-family: 'Public Pixel', sans-serif;
+    }
+
+    * {
+      -webkit-user-select: none; /* Safari */
+      -moz-user-select: none; /* Firefox */
+      -ms-user-select: none; /* Internet Explorer/Edge */
+      user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera, and Edge */
+      -webkit-tap-highlight-color: transparent; /* Disable tap highlight */
+      -webkit-touch-callout: none; /* Disable callout, image longpress menu */
+    }
+
+  </style>
+  <title>TapRaceSprint by jaqbek</title>
+</head>
+<body>
+  <div id="root"></div>
+  <div class="landscape-warning">
+    <h1>Please switch to portrait mode to play the game.</h1>
+  </div>
+  <script type="module" src="/src/main.tsx"></script>
+    <script>
+    document.addEventListener('gesturestart', function (e) {
+      e.preventDefault();
+    });
+
+    document.addEventListener('gesturechange', function (e) {
+      e.preventDefault();
+    });
+
+    document.addEventListener('gestureend', function (e) {
+      e.preventDefault();
+    });
+
+    document.addEventListener('touchstart', function (e) {
+      if (e.touches.length > 1) {
+        e.preventDefault();
+      }
+    });
+
+    document.addEventListener('touchmove', function (e) {
+      e.preventDefault(); // Prevent scrolling on touch move
+    });
+
+    document.addEventListener('touchend', function (e) {
+      if (e.touches.length > 1) {
+        e.preventDefault();
+      }
+    });
+
+    // Optional: Prevent scrolling with the keyboard
+    window.addEventListener('keydown', function(e) {
+      if ([32, 37, 38, 39, 40].includes(e.keyCode)) {
+        e.preventDefault();
+      }
+    });
+
+    // Attempt to lock screen orientation to portrait mode
+    const lockOrientation = () => {
+      if (screen.orientation && screen.orientation.lock) {
+        screen.orientation.lock('portrait').catch(err => {
+          console.log('Orientation lock failed: ', err);
+        });
+      } else {
+        console.log('Orientation lock is not supported on this device.');
+      }
+    };
+
+    // Try to lock orientation when the page loads
+    window.addEventListener('load', lockOrientation);
+
+    // Try to lock orientation when the orientation changes
+    window.addEventListener('orientationchange', lockOrientation);
+  </script>
+</body>
+</html>
+
